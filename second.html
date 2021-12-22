@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
+    <title>로그인 페이지</title>
+    <style>
+        * {
+            font-family: 'Yeon Sung', cursive;
+        }
+
+        .image {
+            color: white;
+            width: 300px;
+            height: 400px;
+            background-size: small;
+            background-position: center;
+            background-image: url('https://wallpapercave.com/wp/wp6380433.jpg');
+            border-radius: 30px;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        .hello {
+            color: orange;
+            text-align: center;
+        }
+
+        .hi {
+            color: rgb(255, 187, 0);
+            text-align: center;
+        }
+        #extra {
+            color: orangered;
+        }
+
+        .wrap {
+            margin: 10px auto;
+            width: 300px;
+        }
+
+        .font-size {
+            font-size: xx-large;
+        }
+        
+        #button-style {
+            background-color: orange;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="hello">만나서 반갑습니다.</h1>
+    <h2 class="hi"> 좋은 하루 보내세요 :)</h2>
+    <div class="wrap">
+        <div class="image">
+            <h1 class="font-size">로그인 페이지</h1>
+            <h5>아이디, 비밀번호를 입력해주세요</h5>
+            <button id = "button-style">로그인하기</button>
+        </div>
+        <div id="extra">
+            <p>
+                ID: <input type="text" placeholder="아이디를 입력해주세요." />
+            </p>
+            <p>
+                PW: <input type="password" placeholder="패스워드를 입력해주세요."/>
+            </p>
+        </div>
+        <button id = "button-style">로그인하기</button>
+    </div>
+</body>
+
+</html>
