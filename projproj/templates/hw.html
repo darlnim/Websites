@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Single+Day&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script>
+        function new1() {
+            let name = $('#name').val();
+            let amount = $('#amount').val();
+            let address = $('#address').val();
+            let number = $('#number').val();
+
+            if (name == '') {
+                alert('제목을 입력해주세요.')
+                $('#name').focus();
+            } else if (amount == '') {
+                alert('수량을 선택해주세요.')
+                $('#amount').focus();
+                return;
+            } else if (address == '') {
+                alert('주소를 입력해주세요')
+                $('#address').focus();
+                return;
+            } else if (number == '') {
+                alert('전화번호를 입력해주세요')
+                $('#number').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/orders",
+                data: { 'name_give': name, 'amount_give': amount, 'address_give': address, 'number_give': number },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        function q1() {
+            $.ajax({
+                type: "GET",
+                url: 'https://api.manana.kr/exchange/rate.json',
+                data: {},
+                success: function (response) {
+                    let is_rate = response[1]['rate'];
+                    $('#is_rate').text(is_rate);
+                }
+            });
+        }
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/orders",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let orders = response['orders'];
+                        for (let i = 0; i < orders.length; i++) {
+                            make_card(orders[i]['name'], orders[i]['amount'], orders[i]['address'], orders[i]['number']);
+                        }
+                    } else {
+                        alert('주문을 완료하지 못했습니다.');
+                    }
+                }
+            })
+        }
+
+        function make_card(name, amount, address, number) {
+            let temp_html = `<tr>
+                                <td>${name}</td>
+                                <td>${amount}</td>
+                                <td>${address}</td>
+                                <td>${number}</td>
+                            </tr>`;
+            $('#orders-box').append(temp_html);
+        }
+
+    </script>
+
+    <title>쇼핑몰</title>
+
+    <style>
+        * {
+            background-color: rgb(255, 215, 222);
+        }
+
+        * {
+            font-family: 'Single Day', cursive;
+        }
+
+        .image {
+            color: white;
+            width: 400px;
+            height: 300px;
+            background-size: small;
+            background-position: center;
+            background-image: url("https://www.lighthouseinn.com/wp-content/uploads/2020/12/hot-cocoa-fireplace.jpg");
+            border-radius: 30px;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        #smaller {
+            font-size: 25px;
+        }
+
+        .outline {
+            outline: 2px dashed skyblue;
+        }
+
+        input {
+            border-radius: 10px;
+        }
+
+        form {
+            display: table;
+        }
+
+        p {
+            display: table-row;
+        }
+
+        label {
+            display: table-cell;
+        }
+
+        input {
+            display: table-cell;
+        }
+
+        .wrap {
+            margin: 15px auto;
+            width: 500px;
+        }
+
+        .middle {
+            align-content: center;
+        }
+
+        #unique {
+            color: blue;
+        }
+    </style>
+</head>
+
+
+<body onload="q1()">
+    <div class="outline">
+        <div class="wrap">
+            <div class="image">
+            </div>
+            <form>
+                <div class="wrap">
+                    <h1>핫초코 <span id="smaller"> 가격: 1000원/개 </span></h1>
+                    <h6> 핫초코 드시고 따듯하고 달콤한 하루 보내세요. </h2>
+                        <h7> <span id="unique">달러-원 환율: </span><span id="is_rate"></span> </h5>
+                            <h1>주문하기</h1>
+                            <p>
+                                <label>주문자 성함: </label>
+                                <input id="name" type="text" />
+                            </p>
+                            <p>
+                                <label>수량: </label>
+                                <input id="amount" placeholder="수량을 선택해 주세요." list="수량 옵션" name="수량?" />
+                                <datalist id="수량 옵션">
+                                    <option value="10">
+                                    <option value="20">
+                                    <option value="30">
+                                    <option value="40">
+                                    <option value="50">
+                                    <option value="100">
+                                    <option value="있는거 다 주세요!"></option>
+                                </datalist>
+                            </p>
+                            <p>
+                                <label>주소: </label>
+                                <input id="address" type="text" />
+                            </p>
+                            <p>
+                                <label>전화번호: </label>
+                                <input id="number" type="text" />
+                            </p>
+                            <div class = "orders">
+                                <table class = "table">
+                                    <thead>
+                                        <tr>
+                                            <th class = "meta_info" scope = "col">이름</th>
+                                            <th class = "meta_info" scope = "col">수량</th>
+                                            <th class = "meta_info" scope = "col">주소</th>
+                                            <th class = "meta_info" scope = "col">전화번호</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id = "orders-box">
+                                    </tbody>
+                                </table>
+                            </div>
+                </div>
+            </form>
+            <button onclick="new1()" type="button" class="btn btn-outline-info">주문하기</button>
+        </div>
+    </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            alert('다 로딩됐다!');
+            $('#orders-box').html('');
+            listing();
+        });
+    </script>
+</body>
+
+</html>
